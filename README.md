@@ -134,7 +134,13 @@ T-shirt/top、Trouser、Pullover、Dress、Coat、Sandal、Shirt、Sneaker、Bag
 
 ### 1. 不同模型整体性能对比
 
-四种模型在测试集上的实验结果如下：
+**实验结果说明：**
+
+以下结果为本项目最终采用的实验记录，来自此前完成的四种模型训练与测试评估。所有模型均采用相同的主要训练配置：Batch Size=64、Epochs=5、Adam 优化器、Learning Rate=0.001。
+
+由于神经网络训练存在随机性，重新训练时可能受到随机初始化、数据打乱顺序等因素影响，因此重新运行项目不保证得到完全一致的结果。
+
+本项目将上述实验数据作为最终结果展示。后续使用者可以根据项目代码重新训练模型，独立获得新的实验结果。
 
 | 模型 | Accuracy | Macro F1 |
 |---|---:|---:|
@@ -225,6 +231,10 @@ FashionVision-MindSpore/
 
 ## 九、运行方法
 
+本项目支持从零开始配置运行环境、下载数据集、训练模型、评估模型以及生成实验可视化结果。
+
+需要注意的是，项目中的四模型对比图使用的是此前保存的实验记录，而当前 GitHub 版本的训练和评估脚本默认针对 Improved CNN Without Dropout 模型。
+
 ### 1. 克隆项目
 
 ```bash
@@ -240,18 +250,9 @@ cd FashionVision-MindSpore
 python main.py
 ```
 
-运行后，终端会显示项目基本信息、当前开发进度以及已实现的主要功能。
+运行后，终端会显示项目基本信息和已实现的主要功能。
 
-目前项目已实现：
-
-1. 数据集加载与预处理；
-2. MLP、CNN 和改进 CNN 模型构建；
-3. 模型训练与性能评估；
-4. 模型对比与 Dropout 消融实验；
-5. 实验结果可视化；
-6. 单张图片预测。
-
-`main.py` 主要用于展示项目基本信息和功能概览，不会自动执行训练、评估或预测。具体功能需要运行后续对应的 Python 文件。
+`main.py` 主要用于展示项目基本信息和功能概览，不会自动执行训练、评估或预测。
 
 ### 3. 创建虚拟环境
 
@@ -273,51 +274,106 @@ pip install -r requirements.txt
 
 注意：MindSpore 的安装需要结合操作系统、Python 版本和运行设备选择合适的安装环境。
 
+本项目使用 Python 3.11.9 和 MindSpore 2.10.0，在 CPU 环境下完成实验。
+
 ### 5. 下载数据集
 
-项目提供了数据集下载函数。进入项目根目录，执行：
+项目提供了数据集自动下载函数。
 
-```bash
+在项目根目录下执行：
+
+```powershell
 python -c "import sys; sys.path.insert(0, 'src'); from dataset import download_data; download_data()"
 ```
 
-数据将下载并解压至 `data/fashion_mnist/`。
+数据将下载并解压至：
+
+```text
+data/fashion_mnist/
+```
 
 ### 6. 训练模型
 
-```bash
+在项目根目录下运行：
+
+```powershell
 python src/train.py
 ```
 
-当前训练入口默认训练 Improved CNN Without Dropout，训练完成后将模型参数保存至：
+当前训练脚本默认训练 Improved CNN Without Dropout 模型。
 
-`checkpoints/improved_cnn_no_dropout.ckpt`
+主要训练配置：
 
-注：README 中的四模型对比结果来自分别训练各模型的实验记录。当前训练入口默认只训练 Improved CNN Without Dropout；如需复现其他模型的结果，需要在训练代码中切换对应模型及权重保存路径。
+- Batch Size：64
+- Epochs：5
+- Optimizer：Adam
+- Learning Rate：0.001
+- Loss Function：CrossEntropyLoss
+
+训练完成后，模型参数将保存至：
+
+```text
+checkpoints/improved_cnn_no_dropout.ckpt
+```
+
+注意：当前版本的训练入口默认只训练 Improved CNN Without Dropout，不会自动训练全部四种模型。
 
 ### 7. 模型评估
 
-```bash
+完成模型训练后，运行：
+
+```powershell
 python src/evaluate.py
 ```
 
-运行后输出测试集 Accuracy、各类别 Precision、Recall、F1-score 和混淆矩阵。
+程序将加载训练得到的模型权重，并在 Fashion-MNIST 测试集上计算 Accuracy，输出各类别的 Precision、Recall、F1-score 和 Confusion Matrix。
+
+需要先完成模型训练，确保对应的模型权重文件存在。
 
 ### 8. 生成实验对比图
 
-```bash
+在项目根目录下运行：
+
+```powershell
 python src/visualize.py
 ```
 
+程序将生成以下四张图表：
+
+- `accuracy_comparison.png`：四种模型的 Accuracy 对比；
+- `macro_f1_comparison.png`：四种模型的 Macro F1 对比；
+- `class_f1_comparison.png`：四种模型在不同类别上的 F1-score 对比；
+- `confusion_matrix_comparison.png`：四种模型的混淆矩阵对比。
+
 生成的图片保存在 `results/` 目录下。
+
+注意：当前版本的可视化脚本使用项目此前保存的四模型实验数据，不会自动读取重新训练后的评估结果。因此，重新训练模型不会自动更新四模型对比图。
 
 ### 9. 单张图片预测
 
-```bash
+完成模型训练后，运行：
+
+```powershell
 python src/predict.py
 ```
 
-运行后将展示测试集第一张图片的预测结果，并保存可视化图片。
+程序将加载 Improved CNN Without Dropout 模型，对 Fashion-MNIST 测试集中的第一张图片进行预测。
+
+运行结果包括真实类别、预测类别和各类别预测概率，并生成：
+
+```text
+results/prediction_result.png
+```
+
+### 10. 实验结果复现说明
+
+本项目 GitHub 仓库未上传 Fashion-MNIST 数据集和模型权重文件，需要使用者自行下载数据集并训练模型。
+
+README 中展示的四模型实验结果来自此前完成的训练与评估记录。当前仓库保留了对应的实验结果可视化代码，但没有上传当时四种模型的权重文件。
+
+使用者可以按照上述步骤重新训练 Improved CNN Without Dropout，并完成模型评估和单张图片预测。
+
+由于神经网络训练存在随机性，重新训练得到的指标可能与 README 中记录的实验结果存在差异。本项目不保证重新运行后能够完全复现表格中的数值。
 
 ## 十、项目总结与后续改进
 
