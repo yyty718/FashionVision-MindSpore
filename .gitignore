@@ -1,0 +1,26 @@
+
+# Python 缓存文件
+__pycache__/
+*.py[cod]
+
+# Python 虚拟环境
+.venv/
+venv/
+env/
+
+# PyCharm 项目配置
+.idea/
+
+# Jupyter Notebook 缓存
+.ipynb_checkpoints/
+
+# 模型权重文件
+*.ckpt
+*.mindir
+
+# 训练输出与日志
+logs/
+runs/
+
+# 本地数据集
+data/
