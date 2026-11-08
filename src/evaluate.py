@@ -15,15 +15,14 @@ from sklearn.metrics import (
 )
 
 from dataset import create_dataset
-from models import CNN
+from models import ImprovedCNNWithoutDropout
 
 
 # 项目根目录
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # 模型参数文件
-CHECKPOINT_PATH = PROJECT_ROOT / "checkpoints" / "cnn.ckpt"
-
+CHECKPOINT_PATH = PROJECT_ROOT / "checkpoints" / "improved_cnn_no_dropout.ckpt"
 
 # Fashion-MNIST 类别名称
 CLASS_NAMES = [
@@ -60,7 +59,7 @@ def evaluate():
     print("测试集批次数量：", test_dataset.get_dataset_size())
 
     # 3. 创建 CNN 网络
-    network = CNN()
+    network = ImprovedCNNWithoutDropout()
 
     # 4. 加载训练好的模型参数
     param_dict = ms.load_checkpoint(str(CHECKPOINT_PATH))
@@ -71,7 +70,7 @@ def evaluate():
     network.set_train(False)
 
     print("\n模型参数加载完成！")
-    print("开始评估 CNN 模型！\n")
+    print("开始评估 Improved CNN Without Dropout模型！\n")
 
     # 6. 保存真实标签和预测标签
     all_labels = []
@@ -99,7 +98,7 @@ def evaluate():
     )
 
     print("=" * 50)
-    print("CNN 模型测试结果")
+    print("Improved CNN Without Dropout模型测试结果")
     print("=" * 50)
 
     print(f"\nAccuracy（准确率）：{accuracy:.4f}")

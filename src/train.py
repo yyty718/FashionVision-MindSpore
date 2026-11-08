@@ -12,7 +12,7 @@ from mindspore.train import Model
 from mindspore.train.callback import LossMonitor
 
 from dataset import create_dataset
-from models import MLP,CNN
+from models import MLP,CNN,ImprovedCNN,ImprovedCNNWithoutDropout
 
 
 # 项目根目录
@@ -42,7 +42,7 @@ def train():
     print("训练集批次数量：", train_dataset.get_dataset_size())
 
     # 3. 创建 CNN 网络
-    network = CNN()
+    network = ImprovedCNNWithoutDropout()
 
     # 4. 定义损失函数
     loss_fn = nn.CrossEntropyLoss()
@@ -65,7 +65,7 @@ def train():
     loss_monitor = LossMonitor(per_print_times=100)
 
     # 8. 开始训练
-    print("\n开始训练 CNN 模型！")
+    print("\n开始训练 Improved CNN Without Dropout 模型！")
 
     model.train(
         5,
@@ -74,12 +74,12 @@ def train():
         dataset_sink_mode=False
     )
 
-    print("\nCNN 模型训练完成！")
+    print("\nImproved CNN Without Dropout 模型训练完成！")
 
     # 9. 保存训练好的模型
     CHECKPOINT_DIR.mkdir(parents=True, exist_ok=True)
 
-    checkpoint_path = CHECKPOINT_DIR / "cnn.ckpt"
+    checkpoint_path = CHECKPOINT_DIR / "improved_cnn_no_dropout.ckpt"
 
     ms.save_checkpoint(
         network,
