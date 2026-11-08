@@ -4,7 +4,11 @@
 
 本项目使用 Python 和 MindSpore 深度学习框架，在 Fashion-MNIST 数据集上实现服饰图像分类。通过构建多层感知机（MLP）、基础卷积神经网络（CNN）和改进型 CNN，对比不同网络结构的分类效果，并进一步通过消融实验分析 Dropout 对模型性能的影响。
 
-项目包含数据集读取与预处理、模型构建、模型训练、模型评估、实验结果可视化和单张图片预测等环节。
+项目包含数据集读取与预处理、模型构建、模型训练、模型评估、
+实验结果可视化和批量图片预测等环节。
+
+在预测部分，项目支持对完整测试集进行推理，
+并通过预测网格、类别概率柱状图和错误案例可视化展示模型的分类结果。
 
 ## 一、项目介绍
 
@@ -190,13 +194,43 @@ T-shirt/top、Trouser、Pullover、Dress、Coat、Sandal、Shirt、Sneaker、Bag
 
 需要注意的是，目前每种模型只进行了单次训练，实验轮数也相对有限，因此不能据此得出 Dropout 在一般情况下无效的结论。实验结果仅反映当前数据集、模型结构和训练配置下的表现。
 
-## 七、单张图片预测
+## 七、模型预测与结果可视化
 
-项目使用训练完成的模型，对测试集中的单张图片进行预测，并通过 Softmax 将模型输出转换为各类别的预测概率。
+项目使用训练完成的 Improved CNN Without Dropout 模型，
+对 Fashion-MNIST 完整测试集进行批量预测。
 
-可视化结果同时展示原始服饰图片、真实类别、预测类别以及各类别预测概率。
+程序首先加载训练好的模型权重，
+然后对测试集中的图像进行前向推理，
+通过 Softmax 将模型输出转换为各类别的预测概率。
 
-![Prediction Result](results/prediction_result.png)
+预测完成后，程序统计完整测试集的预测正确数量、
+预测错误数量和准确率，并生成以下三种可视化结果。
+
+### 1. 批量预测结果
+
+随机选取测试集中的20张图片，
+展示每张图片的真实类别、预测类别以及预测是否正确。
+
+![Batch Prediction](results/prediction_grid.png)
+
+### 2. 单张图片预测概率
+
+选取一张预测正确的测试图片，
+展示原始图像以及模型对10个类别的预测概率。
+
+![Prediction Probability](results/prediction_probability.png)
+
+### 3. 错误案例分析
+
+从测试集中选取一张预测错误的图片，
+展示其真实类别、预测类别和各类别预测概率，
+用于观察模型可能存在的分类困难。
+
+![Prediction Error](results/prediction_error.png)
+
+以上图片均由 `src/predict.py` 自动生成，
+保存在 `results/` 目录下。
+
 
 ## 八、项目结构
 
@@ -210,10 +244,12 @@ FashionVision-MindSpore/
 │
 ├── results/                 # 实验结果与可视化图片
 │   ├── accuracy_comparison.png
-│   ├── macro_f1_comparison.png
-│   ├── class_f1_comparison.png
-│   ├── confusion_matrix_comparison.png
-│   └── prediction_result.png
+    ├── macro_f1_comparison.png
+    ├── class_f1_comparison.png
+    ├── confusion_matrix_comparison.png
+    ├── prediction_grid.png
+    ├── prediction_probability.png
+    └── prediction_error.png
 │
 ├── src/
 │   ├── dataset.py            # 数据集加载与预处理
