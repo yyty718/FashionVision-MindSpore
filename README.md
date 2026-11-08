@@ -1,96 +1,338 @@
-
 # FashionVision-MindSpore
 
 **基于 MindSpore 的 Fashion-MNIST 图像分类项目**
 
-本项目使用 Python 和 MindSpore 深度学习框架，
-从零实现一个 Fashion-MNIST 图像分类系统。
+本项目使用 Python 和 MindSpore 深度学习框架，在 Fashion-MNIST 数据集上实现服饰图像分类。通过构建多层感知机（MLP）、基础卷积神经网络（CNN）和改进型 CNN，对比不同网络结构的分类效果，并进一步通过消融实验分析 Dropout 对模型性能的影响。
 
-项目将从数据集读取与预处理开始，逐步实现不同类型的
-神经网络模型，并通过实验比较不同模型的分类效果。
-
-目前项目正在开发中。
+项目包含数据集读取与预处理、模型构建、模型训练、模型评估、实验结果可视化和单张图片预测等环节。
 
 ## 一、项目介绍
 
-Fashion-MNIST 是一个常用的图像分类数据集，
-包含 10 种不同类别的服饰灰度图像。
+Fashion-MNIST 是一个常用的图像分类数据集，包含 10 种不同类别的服饰灰度图像。
 
-本项目计划通过实现多种神经网络模型，
-学习深度学习图像分类任务的基本流程，
-理解数据预处理、模型构建、模型训练和模型评估等环节。
+本项目主要围绕以下问题展开：
+
+- 全连接神经网络与卷积神经网络在图像分类任务中的表现有什么区别？
+- 在基础 CNN 上增加卷积层和 Batch Normalization，能否改善分类效果？
+- Dropout 是否一定能够提升模型的泛化性能？
+
+通过设计不同模型并进行实验对比，观察网络结构变化对分类结果的影响。
+
+本项目的一个重点是围绕 Dropout 设计消融实验，在保持改进 CNN 主要结构不变的情况下，对比使用和移除 Dropout 两种设置下的分类表现，并结合整体评价指标与类别混淆情况分析实验结果。
 
 ## 二、数据集介绍
 
-使用 Fashion-MNIST 数据集。
+本项目使用 Fashion-MNIST 数据集。
 
-- 训练集：60,000 张图像
-- 测试集：10,000 张图像
-- 图像尺寸：28 × 28
-- 图像通道：单通道灰度图
-- 分类类别：10 类
+| 数据集信息 | 内容 |
+|---|---|
+| 训练集 | 60,000 张图像 |
+| 测试集 | 10,000 张图像 |
+| 图像尺寸 | 28 × 28 |
+| 图像通道 | 单通道灰度图 |
+| 分类类别 | 10 类 |
+
+类别包括：
+
+T-shirt/top、Trouser、Pullover、Dress、Coat、Sandal、Shirt、Sneaker、Bag、Ankle boot。
+
+数据集来源：[Fashion-MNIST 官方仓库](https://github.com/zalandoresearch/fashion-mnist)。
+
+### 数据预处理
+
+项目使用 MindSpore Dataset 加载数据，并完成以下预处理：
+
+1. 使用 `Rescale` 将像素值缩放至 0～1。
+2. 使用 `Normalize` 对图像进行标准化，均值为 0.2860，标准差为 0.3530。
+3. 使用 `HWC2CHW` 将图像维度转换为适合网络输入的格式。
+4. 将标签转换为 `int32` 类型。
+5. 使用 Batch 操作将数据划分为批次，Batch Size 设置为 64。
 
 ## 三、技术栈
 
-- Python 3.11
+- Python 3.11.9
 - MindSpore 2.10.0
-- NumPy
-- Matplotlib
-- Scikit-learn
+- NumPy 1.26.4
+- Matplotlib 3.11.2
+- Scikit-learn 1.9.1
+- Pillow 13.0.0
 - PyCharm
 - Git / GitHub
 
 ## 四、模型设计
 
-计划实现并比较以下三种模型：
+项目实现并比较了四种模型。
 
 ### 1. 多层感知机（MLP）
 
-使用全连接神经网络完成图像分类，
-作为基础模型和实验对照。
+将输入的 28 × 28 图像展平为 784 维向量，通过三层全连接结构完成分类：
+
+`784 → 256 → 128 → 10`
+
+该模型作为基础对照模型，用于观察不使用卷积操作时的分类效果。
+
+参数量：235,146。
 
 ### 2. 基础卷积神经网络（CNN）
 
-使用卷积层和池化层提取图像特征，
-研究卷积神经网络在图像分类任务中的表现。
+使用两组卷积层和最大池化层提取图像特征，再通过全连接层输出分类结果。
+
+主要结构：
+
+- Conv2d：1 → 16
+- Conv2d：16 → 32
+- MaxPool2d
+- Flatten
+- Fully Connected：1568 → 128 → 10
+
+参数量：206,922。
 
 ### 3. 改进卷积神经网络（Improved CNN）
 
-在基础 CNN 的基础上引入 Batch Normalization、
-Dropout 等方法，尝试改善模型的分类效果。
+在基础 CNN 的基础上增加卷积层和 Batch Normalization，并引入 Dropout。
 
-## 五、项目计划
+主要改进：
 
-- [x] 创建项目目录与 Python 虚拟环境
-- [x] 配置 Git 并完成首次 GitHub 推送
-- [x] 编写项目说明与依赖清单
-- [ ] Fashion-MNIST 数据集读取与预处理
-- [ ] MLP 模型实现
-- [ ] 基础 CNN 模型实现
-- [ ] Improved CNN 模型实现
-- [ ] 模型训练与参数调整
-- [ ] 模型评价与实验对比
-- [ ] 结果可视化与单张图片预测
-- [ ] 完善实验分析与项目文档
+- 增加卷积通道数；
+- 使用 Batch Normalization 稳定训练过程；
+- 使用 Dropout 降低过拟合风险。
 
-## 六、项目结构
+参数量：431,146。
 
-随着项目开发逐步完善，预计采用以下结构：
+### 4. 去除 Dropout 的改进卷积神经网络（Improved CNN Without Dropout）
+
+保持改进 CNN 的主要网络结构不变，移除 Dropout 层，观察模型性能变化。
+
+该模型用于 Dropout 消融实验，分析正则化方法在当前实验设置下的实际效果。
+
+参数量：431,146。
+
+## 五、实验设置
+
+为保证模型之间具有可比性，实验采用相同的主要训练配置：
+
+| 实验配置 | 设置 |
+|---|---|
+| 数据集 | Fashion-MNIST |
+| 运行设备 | CPU |
+| Batch Size | 64 |
+| Epochs | 5 |
+| 优化器 | Adam |
+| Learning Rate | 0.001 |
+| Loss Function | CrossEntropyLoss |
+| 评价数据 | 测试集 |
+
+评价指标包括：
+
+- Accuracy：准确率
+- Precision：精确率
+- Recall：召回率
+- F1-score：F1 分数
+- Confusion Matrix：混淆矩阵
+
+## 六、实验结果与分析
+
+### 1. 不同模型整体性能对比
+
+四种模型在测试集上的实验结果如下：
+
+| 模型 | Accuracy | Macro F1 |
+|---|---:|---:|
+| MLP | 88.18% | 88.22% |
+| CNN | 91.07% | 90.97% |
+| Improved CNN | 90.88% | 90.90% |
+| Improved CNN Without Dropout | **91.40%** | **91.49%** |
+
+从实验结果可以看出：
+
+- CNN 相比 MLP 在准确率上提高了 2.89 个百分点，说明卷积操作能够更好地提取图像的局部特征。
+- Improved CNN 并没有在本次实验中超过基础 CNN，说明增加网络结构复杂度并不一定能够带来性能提升。
+- 去除 Dropout 后，模型取得了本次实验中最高的 Accuracy 和 Macro F1。
+
+### 2. Accuracy 对比
+
+![Accuracy Comparison](results/accuracy_comparison.png)
+
+### 3. Macro F1 对比
+
+![Macro F1 Comparison](results/macro_f1_comparison.png)
+
+### 4. 各类别 F1-score 对比
+
+![Class F1 Comparison](results/class_f1_comparison.png)
+
+### 5. 混淆矩阵对比
+
+![Confusion Matrix Comparison](results/confusion_matrix_comparison.png)
+
+### 6. Dropout 消融实验分析
+
+在保持改进 CNN 主要结构不变的情况下，分别训练带有 Dropout 和不带 Dropout 的模型。
+
+实验结果：
+
+| 指标 | Improved CNN | Without Dropout |
+|---|---:|---:|
+| Accuracy | 90.88% | 91.40% |
+| Macro F1 | 90.90% | 91.49% |
+
+在本次实验设置下，去除 Dropout 后，Accuracy 提高了 0.52 个百分点，Macro F1 提高了 0.59 个百分点。
+
+进一步观察分类结果可以发现，不同类别的表现并不完全一致。例如，去除 Dropout 后，模型对 Shirt 类别的识别效果有所改善，但 T-shirt/top 被误判为 Shirt 的情况也有所增加。
+
+这说明模型整体指标的提升并不意味着所有类别都获得了同等程度的改善。
+
+需要注意的是，目前每种模型只进行了单次训练，实验轮数也相对有限，因此不能据此得出 Dropout 在一般情况下无效的结论。实验结果仅反映当前数据集、模型结构和训练配置下的表现。
+
+## 七、单张图片预测
+
+项目使用训练完成的模型，对测试集中的单张图片进行预测，并通过 Softmax 将模型输出转换为各类别的预测概率。
+
+可视化结果同时展示原始服饰图片、真实类别、预测类别以及各类别预测概率。
+
+![Prediction Result](results/prediction_result.png)
+
+## 八、项目结构
 
 ```text
 FashionVision-MindSpore/
-├── data/                   # 数据集
-├── models/                 # 模型文件
-├── results/                # 实验结果
-├── src/                    # 核心源代码
+│
+├── data/
+│   └── fashion_mnist/       # 本地数据集（不上传 GitHub）
+│
+├── checkpoints/             # 模型权重（不上传 GitHub）
+│
+├── results/                 # 实验结果与可视化图片
+│   ├── accuracy_comparison.png
+│   ├── macro_f1_comparison.png
+│   ├── class_f1_comparison.png
+│   ├── confusion_matrix_comparison.png
+│   └── prediction_result.png
+│
+├── src/
+│   ├── dataset.py            # 数据集加载与预处理
+│   ├── models.py             # 神经网络模型定义
+│   ├── train.py              # 模型训练
+│   ├── evaluate.py           # 模型评估
+│   ├── visualize.py          # 实验结果可视化
+│   └── predict.py            # 单张图片预测
+│
 ├── .gitignore
 ├── requirements.txt
 ├── README.md
-└── main.py
+└── main.py                  # 项目入口，展示项目基本信息与功能概览
 ```
 
-## 七、项目状态
+## 九、运行方法
 
-当前阶段：项目初始化已完成，准备进行数据集读取与预处理。
+### 1. 克隆项目
 
-本项目将持续记录开发过程、实验结果和阶段性总结。
+```bash
+git clone https://github.com/yyty718/FashionVision-MindSpore.git
+cd FashionVision-MindSpore
+```
+
+### 2. 查看项目信息
+
+在项目根目录下运行：
+
+```powershell
+python main.py
+```
+
+运行后，终端会显示项目基本信息、当前开发进度以及已实现的主要功能。
+
+目前项目已实现：
+
+1. 数据集加载与预处理；
+2. MLP、CNN 和改进 CNN 模型构建；
+3. 模型训练与性能评估；
+4. 模型对比与 Dropout 消融实验；
+5. 实验结果可视化；
+6. 单张图片预测。
+
+`main.py` 主要用于展示项目基本信息和功能概览，不会自动执行训练、评估或预测。具体功能需要运行后续对应的 Python 文件。
+
+### 3. 创建虚拟环境
+
+```bash
+python -m venv .venv
+```
+
+Windows PowerShell 激活环境：
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+### 4. 安装依赖
+
+```bash
+pip install -r requirements.txt
+```
+
+注意：MindSpore 的安装需要结合操作系统、Python 版本和运行设备选择合适的安装环境。
+
+### 5. 下载数据集
+
+项目提供了数据集下载函数。进入项目根目录，执行：
+
+```bash
+python -c "import sys; sys.path.insert(0, 'src'); from dataset import download_data; download_data()"
+```
+
+数据将下载并解压至 `data/fashion_mnist/`。
+
+### 6. 训练模型
+
+```bash
+python src/train.py
+```
+
+当前训练入口默认训练 Improved CNN Without Dropout，训练完成后将模型参数保存至：
+
+`checkpoints/improved_cnn_no_dropout.ckpt`
+
+注：README 中的四模型对比结果来自分别训练各模型的实验记录。当前训练入口默认只训练 Improved CNN Without Dropout；如需复现其他模型的结果，需要在训练代码中切换对应模型及权重保存路径。
+
+### 7. 模型评估
+
+```bash
+python src/evaluate.py
+```
+
+运行后输出测试集 Accuracy、各类别 Precision、Recall、F1-score 和混淆矩阵。
+
+### 8. 生成实验对比图
+
+```bash
+python src/visualize.py
+```
+
+生成的图片保存在 `results/` 目录下。
+
+### 9. 单张图片预测
+
+```bash
+python src/predict.py
+```
+
+运行后将展示测试集第一张图片的预测结果，并保存可视化图片。
+
+## 十、项目总结与后续改进
+
+通过本项目，完成了基于 MindSpore 的图像分类基本流程，实践了数据预处理、神经网络构建、模型训练、模型评估和实验可视化等环节。
+
+实验表明，模型结构的复杂程度并不能直接决定分类效果。不同网络结构、正则化方法和训练配置都可能影响模型的最终表现，需要通过实验进行验证。
+
+后续可以从以下方向继续改进：
+
+- 增加随机种子控制和多次重复实验，提高结果的稳定性；
+- 引入验证集，进一步观察模型的泛化能力；
+- 尝试调整学习率、Batch Size 和训练轮数；
+- 增加错误分类样本分析和特征图可视化；
+- 扩展单张图片预测功能，支持用户输入自己的服饰图片。
+
+---
+
+**项目地址：** [FashionVision-MindSpore](https://github.com/yyty718/FashionVision-MindSpore)

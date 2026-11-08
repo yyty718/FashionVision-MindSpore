@@ -1,5 +1,5 @@
 mindspore==2.10.0
-numpy
-matplotlib
-scikit-learn
-Pillow
+numpy==1.26.4
+matplotlib==3.11.2
+scikit-learn==1.9.1
+Pillow==13.0.0
