@@ -15,14 +15,14 @@ from sklearn.metrics import (
 )
 
 from dataset import create_dataset
-from models import MLP
+from models import CNN
 
 
 # 项目根目录
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # 模型参数文件
-CHECKPOINT_PATH = PROJECT_ROOT / "checkpoints" / "mlp.ckpt"
+CHECKPOINT_PATH = PROJECT_ROOT / "checkpoints" / "cnn.ckpt"
 
 
 # Fashion-MNIST 类别名称
@@ -59,8 +59,8 @@ def evaluate():
     print("测试集加载完成！")
     print("测试集批次数量：", test_dataset.get_dataset_size())
 
-    # 3. 创建 MLP 网络
-    network = MLP()
+    # 3. 创建 CNN 网络
+    network = CNN()
 
     # 4. 加载训练好的模型参数
     param_dict = ms.load_checkpoint(str(CHECKPOINT_PATH))
@@ -71,7 +71,7 @@ def evaluate():
     network.set_train(False)
 
     print("\n模型参数加载完成！")
-    print("开始评估 MLP 模型！\n")
+    print("开始评估 CNN 模型！\n")
 
     # 6. 保存真实标签和预测标签
     all_labels = []
@@ -99,7 +99,7 @@ def evaluate():
     )
 
     print("=" * 50)
-    print("MLP 模型测试结果")
+    print("CNN 模型测试结果")
     print("=" * 50)
 
     print(f"\nAccuracy（准确率）：{accuracy:.4f}")
