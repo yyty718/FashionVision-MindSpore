@@ -24,3 +24,14 @@ runs/
 
 # 本地数据集
 data/
+
+# Model checkpoints
+checkpoints/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
