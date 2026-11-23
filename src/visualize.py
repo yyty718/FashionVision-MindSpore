@@ -1,4 +1,5 @@
 
+import json
 from pathlib import Path
 
 import numpy as np
@@ -12,57 +13,70 @@ import matplotlib.pyplot as plt
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 RESULTS_DIR = PROJECT_ROOT / "results"
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+EVALUATION_PATH = RESULTS_DIR / "evaluation_results.json"
 
 
 # =========================
-# 2. 实验结果
+# 2. 读取真实评估结果
 # =========================
 
-model_names = [
-    "MLP",
-    "CNN",
-    "Improved CNN",
-    "Improved CNN\nWithout Dropout"
+if not EVALUATION_PATH.exists():
+    raise FileNotFoundError(
+        f"找不到评估结果：{EVALUATION_PATH}\n"
+        "请先运行：python src/evaluate.py"
+    )
+
+with EVALUATION_PATH.open("r", encoding="utf-8") as file:
+    evaluation = json.load(file)
+
+MODEL_ORDER = [
+    "mlp",
+    "cnn",
+    "improved_cnn",
+    "improved_cnn_no_dropout",
 ]
 
-# Accuracy（准确率）
-accuracy = [88.18, 91.07, 90.88, 91.40]
+missing_models = [
+    model_key
+    for model_key in MODEL_ORDER
+    if model_key not in evaluation["models"]
+]
 
-# Macro F1-score
-macro_f1 = [88.22, 90.97, 90.90, 91.49]
+if missing_models:
+    raise ValueError(
+        "评估结果缺少以下模型，请重新运行 python src/evaluate.py："
+        + ", ".join(missing_models)
+    )
+
+model_results = evaluation["models"]
+full_model_names = [
+    model_results[model_key]["display_name"]
+    for model_key in MODEL_ORDER
+]
+model_names = [
+    name.replace(" Without Dropout", "\nWithout Dropout")
+    for name in full_model_names
+]
+
+accuracy = [
+    model_results[model_key]["accuracy"] * 100
+    for model_key in MODEL_ORDER
+]
+macro_f1 = [
+    model_results[model_key]["macro_f1"] * 100
+    for model_key in MODEL_ORDER
+]
 
 # Fashion-MNIST 类别名称
-class_names = [
-    "T-shirt/top",
-    "Trouser",
-    "Pullover",
-    "Dress",
-    "Coat",
-    "Sandal",
-    "Shirt",
-    "Sneaker",
-    "Bag",
-    "Ankle boot"
-]
+class_names = evaluation["class_names"]
 
 # 每个模型在各类别上的 F1-score
 class_f1 = {
-    "MLP": [
-        0.8289, 0.9755, 0.8026, 0.8883, 0.8090,
-        0.9535, 0.7041, 0.9347, 0.9722, 0.9531
-    ],
-    "CNN": [
-        0.8657, 0.9869, 0.8557, 0.9140, 0.8498,
-        0.9821, 0.7344, 0.9604, 0.9786, 0.9694
-    ],
-    "Improved CNN": [
-        0.8614, 0.9879, 0.8693, 0.9064, 0.8531,
-        0.9844, 0.7243, 0.9574, 0.9826, 0.9636
-    ],
-    "Improved CNN Without Dropout": [
-        0.8434, 0.9900, 0.8803, 0.9115, 0.8590,
-        0.9855, 0.7561, 0.9681, 0.9839, 0.9715
+    full_model_names[index]: [
+        item["f1"]
+        for item in model_results[model_key]["class_metrics"]
     ]
+    for index, model_key in enumerate(MODEL_ORDER)
 }
 
 
@@ -166,57 +180,10 @@ plt.close()
 # =========================
 
 confusion_matrices = {
-    "MLP": np.array([
-        [797, 1, 15, 30, 2, 2, 150, 1, 2, 0],
-        [4, 957, 3, 28, 3, 0, 3, 0, 2, 0],
-        [16, 1, 813, 18, 93, 0, 58, 0, 1, 0],
-        [12, 2, 8, 915, 35, 1, 24, 0, 3, 0],
-        [0, 1, 89, 28, 811, 0, 70, 0, 1, 0],
-        [0, 0, 0, 1, 0, 975, 0, 16, 0, 8],
-        [91, 0, 95, 33, 58, 0, 715, 0, 8, 0],
-        [0, 0, 0, 0, 0, 43, 0, 938, 1, 18],
-        [3, 0, 3, 6, 3, 6, 10, 6, 963, 0],
-        [0, 0, 0, 1, 0, 18, 1, 46, 0, 934]
-    ]),
-
-    "CNN": np.array([
-        [854, 0, 21, 17, 4, 1, 94, 0, 9, 0],
-        [0, 978, 0, 18, 2, 0, 0, 0, 2, 0],
-        [12, 1, 907, 7, 34, 0, 37, 0, 2, 0],
-        [9, 1, 11, 941, 19, 0, 17, 0, 2, 0],
-        [0, 0, 92, 33, 846, 1, 27, 0, 1, 0],
-        [0, 0, 0, 0, 0, 990, 0, 7, 0, 3],
-        [94, 1, 88, 39, 85, 0, 683, 0, 10, 0],
-        [0, 0, 0, 0, 0, 17, 0, 958, 0, 25],
-        [3, 1, 1, 4, 1, 2, 2, 3, 983, 0],
-        [1, 0, 0, 0, 0, 5, 0, 27, 0, 967]
-    ]),
-
-    "Improved CNN": np.array([
-        [873, 0, 7, 12, 3, 1, 98, 0, 6, 0],
-        [0, 981, 0, 13, 2, 0, 2, 0, 2, 0],
-        [9, 1, 841, 9, 63, 0, 76, 0, 1, 0],
-        [23, 3, 7, 901, 22, 0, 43, 0, 1, 0],
-        [0, 0, 40, 27, 871, 0, 62, 0, 0, 0],
-        [0, 0, 0, 0, 0, 976, 0, 20, 0, 4],
-        [119, 0, 40, 22, 79, 0, 729, 0, 11, 0],
-        [0, 0, 0, 0, 0, 2, 0, 977, 0, 21],
-        [3, 1, 0, 4, 2, 1, 2, 1, 986, 0],
-        [0, 0, 0, 0, 0, 3, 1, 43, 0, 953]
-    ]),
-
-    "Improved CNN Without Dropout": np.array([
-        [765, 0, 12, 36, 2, 1, 180, 0, 4, 0],
-        [0, 986, 0, 10, 1, 0, 2, 0, 1, 0],
-        [9, 1, 846, 12, 56, 0, 75, 0, 1, 0],
-        [2, 3, 5, 953, 12, 0, 24, 0, 1, 0],
-        [0, 0, 24, 38, 844, 0, 93, 0, 1, 0],
-        [0, 0, 0, 0, 0, 985, 0, 14, 0, 1],
-        [36, 1, 35, 38, 47, 0, 840, 0, 3, 0],
-        [0, 0, 0, 0, 0, 3, 0, 986, 0, 11],
-        [2, 1, 0, 4, 3, 2, 7, 2, 979, 0],
-        [0, 0, 0, 0, 0, 8, 1, 35, 0, 956]
-    ])
+    model_results[model_key]["display_name"]: np.array(
+        model_results[model_key]["confusion_matrix"]
+    )
+    for model_key in MODEL_ORDER
 }
 
 fig, axes = plt.subplots(2, 2, figsize=(18, 15))
@@ -267,6 +234,8 @@ plt.close()
 # =========================
 
 print("实验结果可视化完成！")
+print("评估结果来源：", EVALUATION_PATH)
+print("评估生成时间：", evaluation["generated_at"])
 print("图表保存位置：", RESULTS_DIR)
 print("生成的文件：")
 print("- accuracy_comparison.png")

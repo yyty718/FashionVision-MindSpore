@@ -1,0 +1,924 @@
+{
+  "generated_at": "2026-11-20T19:49:35+08:00",
+  "dataset": "Fashion-MNIST test",
+  "device_target": "CPU",
+  "checkpoint_dir": "D:\\PythonProject\\FashionVision-MindSpore\\checkpoints",
+  "class_names": [
+    "T-shirt/top",
+    "Trouser",
+    "Pullover",
+    "Dress",
+    "Coat",
+    "Sandal",
+    "Shirt",
+    "Sneaker",
+    "Bag",
+    "Ankle boot"
+  ],
+  "models": {
+    "mlp": {
+      "model_key": "mlp",
+      "display_name": "MLP",
+      "checkpoint_path": "D:\\PythonProject\\FashionVision-MindSpore\\checkpoints\\mlp.ckpt",
+      "accuracy": 0.8805,
+      "macro_f1": 0.8798270489676827,
+      "class_metrics": [
+        {
+          "class_index": 0,
+          "class_name": "T-shirt/top",
+          "precision": 0.8203356367226061,
+          "recall": 0.831,
+          "f1": 0.8256333830104322,
+          "support": 1000
+        },
+        {
+          "class_index": 1,
+          "class_name": "Trouser",
+          "precision": 0.9868020304568528,
+          "recall": 0.972,
+          "f1": 0.979345088161209,
+          "support": 1000
+        },
+        {
+          "class_index": 2,
+          "class_name": "Pullover",
+          "precision": 0.760035682426405,
+          "recall": 0.852,
+          "f1": 0.8033946251768034,
+          "support": 1000
+        },
+        {
+          "class_index": 3,
+          "class_name": "Dress",
+          "precision": 0.8542246982358404,
+          "recall": 0.92,
+          "f1": 0.8858931150698123,
+          "support": 1000
+        },
+        {
+          "class_index": 4,
+          "class_name": "Coat",
+          "precision": 0.8278427205100957,
+          "recall": 0.779,
+          "f1": 0.8026790314270994,
+          "support": 1000
+        },
+        {
+          "class_index": 5,
+          "class_name": "Sandal",
+          "precision": 0.9381642512077295,
+          "recall": 0.971,
+          "f1": 0.9542997542997543,
+          "support": 1000
+        },
+        {
+          "class_index": 6,
+          "class_name": "Shirt",
+          "precision": 0.7289088863892014,
+          "recall": 0.648,
+          "f1": 0.6860772895712017,
+          "support": 1000
+        },
+        {
+          "class_index": 7,
+          "class_name": "Sneaker",
+          "precision": 0.954118873826903,
+          "recall": 0.915,
+          "f1": 0.9341500765696784,
+          "support": 1000
+        },
+        {
+          "class_index": 8,
+          "class_name": "Bag",
+          "precision": 0.9866529774127311,
+          "recall": 0.961,
+          "f1": 0.9736575481256332,
+          "support": 1000
+        },
+        {
+          "class_index": 9,
+          "class_name": "Ankle boot",
+          "precision": 0.9502982107355865,
+          "recall": 0.956,
+          "f1": 0.9531405782652044,
+          "support": 1000
+        }
+      ],
+      "confusion_matrix": [
+        [
+          831,
+          1,
+          23,
+          34,
+          3,
+          1,
+          103,
+          0,
+          4,
+          0
+        ],
+        [
+          1,
+          972,
+          1,
+          20,
+          3,
+          0,
+          2,
+          0,
+          1,
+          0
+        ],
+        [
+          15,
+          0,
+          852,
+          14,
+          66,
+          0,
+          53,
+          0,
+          0,
+          0
+        ],
+        [
+          16,
+          10,
+          13,
+          920,
+          23,
+          0,
+          18,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          121,
+          43,
+          779,
+          0,
+          56,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2,
+          0,
+          971,
+          0,
+          15,
+          1,
+          11
+        ],
+        [
+          142,
+          1,
+          106,
+          35,
+          63,
+          0,
+          648,
+          0,
+          5,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          45,
+          0,
+          915,
+          1,
+          39
+        ],
+        [
+          7,
+          0,
+          5,
+          9,
+          4,
+          3,
+          9,
+          2,
+          961,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          15,
+          0,
+          27,
+          1,
+          956
+        ]
+      ],
+      "training_record": {
+        "model": "MLP",
+        "model_key": "mlp",
+        "epochs": 5,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "optimizer": "Adam",
+        "loss_function": "CrossEntropyLoss",
+        "device_target": "CPU",
+        "seed": 42,
+        "parameter_count": 235146,
+        "train_dataset_batches": 938,
+        "elapsed_seconds": 55.053,
+        "checkpoint_path": "D:\\PythonProject\\FashionVision-MindSpore\\checkpoints\\mlp.ckpt"
+      }
+    },
+    "cnn": {
+      "model_key": "cnn",
+      "display_name": "CNN",
+      "checkpoint_path": "D:\\PythonProject\\FashionVision-MindSpore\\checkpoints\\cnn.ckpt",
+      "accuracy": 0.9107,
+      "macro_f1": 0.9102112604977121,
+      "class_metrics": [
+        {
+          "class_index": 0,
+          "class_name": "T-shirt/top",
+          "precision": 0.8295668549905838,
+          "recall": 0.881,
+          "f1": 0.8545101842870999,
+          "support": 1000
+        },
+        {
+          "class_index": 1,
+          "class_name": "Trouser",
+          "precision": 0.9840954274353877,
+          "recall": 0.99,
+          "f1": 0.9870388833499502,
+          "support": 1000
+        },
+        {
+          "class_index": 2,
+          "class_name": "Pullover",
+          "precision": 0.8411483253588516,
+          "recall": 0.879,
+          "f1": 0.8596577017114915,
+          "support": 1000
+        },
+        {
+          "class_index": 3,
+          "class_name": "Dress",
+          "precision": 0.9107142857142857,
+          "recall": 0.918,
+          "f1": 0.9143426294820717,
+          "support": 1000
+        },
+        {
+          "class_index": 4,
+          "class_name": "Coat",
+          "precision": 0.8719052744886975,
+          "recall": 0.81,
+          "f1": 0.8398133748055988,
+          "support": 1000
+        },
+        {
+          "class_index": 5,
+          "class_name": "Sandal",
+          "precision": 0.9898785425101214,
+          "recall": 0.978,
+          "f1": 0.9839034205231388,
+          "support": 1000
+        },
+        {
+          "class_index": 6,
+          "class_name": "Shirt",
+          "precision": 0.7664543524416136,
+          "recall": 0.722,
+          "f1": 0.7435633367662204,
+          "support": 1000
+        },
+        {
+          "class_index": 7,
+          "class_name": "Sneaker",
+          "precision": 0.9587426326129665,
+          "recall": 0.976,
+          "f1": 0.9672943508424182,
+          "support": 1000
+        },
+        {
+          "class_index": 8,
+          "class_name": "Bag",
+          "precision": 0.9801192842942346,
+          "recall": 0.986,
+          "f1": 0.9830508474576272,
+          "support": 1000
+        },
+        {
+          "class_index": 9,
+          "class_name": "Ankle boot",
+          "precision": 0.9708835341365462,
+          "recall": 0.967,
+          "f1": 0.968937875751503,
+          "support": 1000
+        }
+      ],
+      "confusion_matrix": [
+        [
+          881,
+          1,
+          14,
+          13,
+          2,
+          1,
+          79,
+          0,
+          8,
+          1
+        ],
+        [
+          0,
+          990,
+          0,
+          7,
+          2,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          23,
+          1,
+          879,
+          7,
+          36,
+          0,
+          54,
+          0,
+          0,
+          0
+        ],
+        [
+          24,
+          8,
+          9,
+          918,
+          21,
+          0,
+          18,
+          0,
+          2,
+          0
+        ],
+        [
+          1,
+          1,
+          86,
+          35,
+          810,
+          0,
+          66,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          1,
+          0,
+          978,
+          0,
+          12,
+          0,
+          8
+        ],
+        [
+          129,
+          4,
+          56,
+          24,
+          56,
+          0,
+          722,
+          0,
+          9,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          4,
+          0,
+          976,
+          0,
+          20
+        ],
+        [
+          4,
+          1,
+          0,
+          3,
+          2,
+          1,
+          1,
+          2,
+          986,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          4,
+          1,
+          28,
+          0,
+          967
+        ]
+      ],
+      "training_record": {
+        "model": "CNN",
+        "model_key": "cnn",
+        "epochs": 5,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "optimizer": "Adam",
+        "loss_function": "CrossEntropyLoss",
+        "device_target": "CPU",
+        "seed": 42,
+        "parameter_count": 206922,
+        "train_dataset_batches": 938,
+        "elapsed_seconds": 144.215,
+        "checkpoint_path": "D:\\PythonProject\\FashionVision-MindSpore\\checkpoints\\cnn.ckpt"
+      }
+    },
+    "improved_cnn": {
+      "model_key": "improved_cnn",
+      "display_name": "Improved CNN",
+      "checkpoint_path": "D:\\PythonProject\\FashionVision-MindSpore\\checkpoints\\improved_cnn.ckpt",
+      "accuracy": 0.9089,
+      "macro_f1": 0.9080923176631019,
+      "class_metrics": [
+        {
+          "class_index": 0,
+          "class_name": "T-shirt/top",
+          "precision": 0.8180163785259327,
+          "recall": 0.899,
+          "f1": 0.8565983801810386,
+          "support": 1000
+        },
+        {
+          "class_index": 1,
+          "class_name": "Trouser",
+          "precision": 0.9959141981613892,
+          "recall": 0.975,
+          "f1": 0.9853461344113188,
+          "support": 1000
+        },
+        {
+          "class_index": 2,
+          "class_name": "Pullover",
+          "precision": 0.8588235294117647,
+          "recall": 0.876,
+          "f1": 0.8673267326732673,
+          "support": 1000
+        },
+        {
+          "class_index": 3,
+          "class_name": "Dress",
+          "precision": 0.902970297029703,
+          "recall": 0.912,
+          "f1": 0.9074626865671642,
+          "support": 1000
+        },
+        {
+          "class_index": 4,
+          "class_name": "Coat",
+          "precision": 0.8422590068159689,
+          "recall": 0.865,
+          "f1": 0.8534780463739516,
+          "support": 1000
+        },
+        {
+          "class_index": 5,
+          "class_name": "Sandal",
+          "precision": 0.9907881269191402,
+          "recall": 0.968,
+          "f1": 0.9792615073343449,
+          "support": 1000
+        },
+        {
+          "class_index": 6,
+          "class_name": "Shirt",
+          "precision": 0.7754629629629629,
+          "recall": 0.67,
+          "f1": 0.7188841201716738,
+          "support": 1000
+        },
+        {
+          "class_index": 7,
+          "class_name": "Sneaker",
+          "precision": 0.9389312977099237,
+          "recall": 0.984,
+          "f1": 0.9609375,
+          "support": 1000
+        },
+        {
+          "class_index": 8,
+          "class_name": "Bag",
+          "precision": 0.9849699398797596,
+          "recall": 0.983,
+          "f1": 0.983983983983984,
+          "support": 1000
+        },
+        {
+          "class_index": 9,
+          "class_name": "Ankle boot",
+          "precision": 0.9785276073619632,
+          "recall": 0.957,
+          "f1": 0.967644084934277,
+          "support": 1000
+        }
+      ],
+      "confusion_matrix": [
+        [
+          899,
+          0,
+          16,
+          14,
+          3,
+          1,
+          61,
+          0,
+          6,
+          0
+        ],
+        [
+          0,
+          975,
+          1,
+          17,
+          4,
+          0,
+          2,
+          0,
+          1,
+          0
+        ],
+        [
+          11,
+          1,
+          876,
+          9,
+          47,
+          0,
+          55,
+          0,
+          1,
+          0
+        ],
+        [
+          26,
+          1,
+          8,
+          912,
+          29,
+          0,
+          24,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          59,
+          27,
+          865,
+          0,
+          49,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          968,
+          0,
+          24,
+          0,
+          8
+        ],
+        [
+          157,
+          1,
+          59,
+          28,
+          78,
+          0,
+          670,
+          0,
+          7,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          3,
+          0,
+          984,
+          0,
+          13
+        ],
+        [
+          6,
+          1,
+          1,
+          3,
+          1,
+          1,
+          2,
+          2,
+          983,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          4,
+          1,
+          38,
+          0,
+          957
+        ]
+      ],
+      "training_record": {
+        "model": "Improved CNN",
+        "model_key": "improved_cnn",
+        "epochs": 5,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "optimizer": "Adam",
+        "loss_function": "CrossEntropyLoss",
+        "device_target": "CPU",
+        "seed": 42,
+        "parameter_count": 431146,
+        "train_dataset_batches": 938,
+        "elapsed_seconds": 279.984,
+        "checkpoint_path": "D:\\PythonProject\\FashionVision-MindSpore\\checkpoints\\improved_cnn.ckpt"
+      }
+    },
+    "improved_cnn_no_dropout": {
+      "model_key": "improved_cnn_no_dropout",
+      "display_name": "Improved CNN Without Dropout",
+      "checkpoint_path": "D:\\PythonProject\\FashionVision-MindSpore\\checkpoints\\improved_cnn_no_dropout.ckpt",
+      "accuracy": 0.9186,
+      "macro_f1": 0.9185342146362737,
+      "class_metrics": [
+        {
+          "class_index": 0,
+          "class_name": "T-shirt/top",
+          "precision": 0.861,
+          "recall": 0.861,
+          "f1": 0.861,
+          "support": 1000
+        },
+        {
+          "class_index": 1,
+          "class_name": "Trouser",
+          "precision": 0.9939516129032258,
+          "recall": 0.986,
+          "f1": 0.9899598393574297,
+          "support": 1000
+        },
+        {
+          "class_index": 2,
+          "class_name": "Pullover",
+          "precision": 0.8953846153846153,
+          "recall": 0.873,
+          "f1": 0.8840506329113924,
+          "support": 1000
+        },
+        {
+          "class_index": 3,
+          "class_name": "Dress",
+          "precision": 0.9202755905511811,
+          "recall": 0.935,
+          "f1": 0.9275793650793651,
+          "support": 1000
+        },
+        {
+          "class_index": 4,
+          "class_name": "Coat",
+          "precision": 0.8678500986193294,
+          "recall": 0.88,
+          "f1": 0.8738828202581926,
+          "support": 1000
+        },
+        {
+          "class_index": 5,
+          "class_name": "Sandal",
+          "precision": 0.9801390268123138,
+          "recall": 0.987,
+          "f1": 0.9835575485799701,
+          "support": 1000
+        },
+        {
+          "class_index": 6,
+          "class_name": "Shirt",
+          "precision": 0.7597989949748744,
+          "recall": 0.756,
+          "f1": 0.7578947368421053,
+          "support": 1000
+        },
+        {
+          "class_index": 7,
+          "class_name": "Sneaker",
+          "precision": 0.970317297850563,
+          "recall": 0.948,
+          "f1": 0.9590288315629742,
+          "support": 1000
+        },
+        {
+          "class_index": 8,
+          "class_name": "Bag",
+          "precision": 0.9820717131474104,
+          "recall": 0.986,
+          "f1": 0.9840319361277445,
+          "support": 1000
+        },
+        {
+          "class_index": 9,
+          "class_name": "Ankle boot",
+          "precision": 0.9549019607843138,
+          "recall": 0.974,
+          "f1": 0.9643564356435643,
+          "support": 1000
+        }
+      ],
+      "confusion_matrix": [
+        [
+          861,
+          0,
+          10,
+          10,
+          3,
+          1,
+          110,
+          0,
+          5,
+          0
+        ],
+        [
+          3,
+          986,
+          0,
+          7,
+          1,
+          0,
+          1,
+          0,
+          2,
+          0
+        ],
+        [
+          13,
+          1,
+          873,
+          9,
+          42,
+          0,
+          61,
+          0,
+          1,
+          0
+        ],
+        [
+          13,
+          2,
+          6,
+          935,
+          21,
+          0,
+          21,
+          0,
+          2,
+          0
+        ],
+        [
+          2,
+          1,
+          45,
+          27,
+          880,
+          0,
+          44,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          987,
+          0,
+          9,
+          0,
+          4
+        ],
+        [
+          106,
+          1,
+          40,
+          24,
+          66,
+          0,
+          756,
+          0,
+          7,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          11,
+          0,
+          948,
+          0,
+          41
+        ],
+        [
+          1,
+          1,
+          1,
+          4,
+          1,
+          1,
+          2,
+          2,
+          986,
+          1
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0,
+          18,
+          0,
+          974
+        ]
+      ],
+      "training_record": {
+        "model": "Improved CNN Without Dropout",
+        "model_key": "improved_cnn_no_dropout",
+        "epochs": 5,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "optimizer": "Adam",
+        "loss_function": "CrossEntropyLoss",
+        "device_target": "CPU",
+        "seed": 42,
+        "parameter_count": 431146,
+        "train_dataset_batches": 938,
+        "elapsed_seconds": 293.84,
+        "checkpoint_path": "D:\\PythonProject\\FashionVision-MindSpore\\checkpoints\\improved_cnn_no_dropout.ckpt"
+      }
+    }
+  }
+}

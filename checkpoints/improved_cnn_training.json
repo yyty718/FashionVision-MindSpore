@@ -1,0 +1,15 @@
+{
+  "model": "Improved CNN",
+  "model_key": "improved_cnn",
+  "epochs": 5,
+  "batch_size": 64,
+  "learning_rate": 0.001,
+  "optimizer": "Adam",
+  "loss_function": "CrossEntropyLoss",
+  "device_target": "CPU",
+  "seed": 42,
+  "parameter_count": 431146,
+  "train_dataset_batches": 938,
+  "elapsed_seconds": 279.984,
+  "checkpoint_path": "D:\\PythonProject\\FashionVision-MindSpore\\checkpoints\\improved_cnn.ckpt"
+}

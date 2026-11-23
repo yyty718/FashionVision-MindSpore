@@ -140,22 +140,22 @@ T-shirt/top、Trouser、Pullover、Dress、Coat、Sandal、Shirt、Sneaker、Bag
 
 **实验结果说明：**
 
-以下结果为本项目最终采用的实验记录，来自此前完成的四种模型训练与测试评估。所有模型均采用相同的主要训练配置：Batch Size=64、Epochs=5、Adam 优化器、Learning Rate=0.001。
+以下结果来自当前代码重新训练的四种模型及其测试集评估。所有模型均采用相同的主要训练配置：Batch Size=64、Epochs=5、Adam 优化器、Learning Rate=0.001、Random Seed=42。
 
-由于神经网络训练存在随机性，重新训练时可能受到随机初始化、数据打乱顺序等因素影响，因此重新运行项目不保证得到完全一致的结果。
+由于神经网络训练存在随机性，即使固定随机种子，不同软件版本和运行环境也可能产生细微差异。
 
-本项目将上述实验数据作为最终结果展示。后续使用者可以根据项目代码重新训练模型，独立获得新的实验结果。
+本项目将当前评估结果作为最终实验数据展示。后续使用者可以通过 `src/evaluate.py` 重新生成完整指标。
 
 | 模型 | Accuracy | Macro F1 |
 |---|---:|---:|
-| MLP | 88.18% | 88.22% |
-| CNN | 91.07% | 90.97% |
-| Improved CNN | 90.88% | 90.90% |
-| Improved CNN Without Dropout | **91.40%** | **91.49%** |
+| MLP | 88.05% | 87.98% |
+| CNN | 91.07% | 91.02% |
+| Improved CNN | 90.89% | 90.81% |
+| Improved CNN Without Dropout | **91.86%** | **91.85%** |
 
 从实验结果可以看出：
 
-- CNN 相比 MLP 在准确率上提高了 2.89 个百分点，说明卷积操作能够更好地提取图像的局部特征。
+- CNN 相比 MLP 在准确率上提高了 3.02 个百分点，说明卷积操作能够更好地提取图像的局部特征。
 - Improved CNN 并没有在本次实验中超过基础 CNN，说明增加网络结构复杂度并不一定能够带来性能提升。
 - 去除 Dropout 后，模型取得了本次实验中最高的 Accuracy 和 Macro F1。
 
@@ -183,10 +183,10 @@ T-shirt/top、Trouser、Pullover、Dress、Coat、Sandal、Shirt、Sneaker、Bag
 
 | 指标 | Improved CNN | Without Dropout |
 |---|---:|---:|
-| Accuracy | 90.88% | 91.40% |
-| Macro F1 | 90.90% | 91.49% |
+| Accuracy | 90.89% | 91.86% |
+| Macro F1 | 90.81% | 91.85% |
 
-在本次实验设置下，去除 Dropout 后，Accuracy 提高了 0.52 个百分点，Macro F1 提高了 0.59 个百分点。
+在本次实验设置下，去除 Dropout 后，Accuracy 提高了 0.97 个百分点，Macro F1 提高了 1.04 个百分点。
 
 进一步观察分类结果可以发现，不同类别的表现并不完全一致。例如，去除 Dropout 后，模型对 Shirt 类别的识别效果有所改善，但 T-shirt/top 被误判为 Shirt 的情况也有所增加。
 
@@ -336,7 +336,26 @@ data/fashion_mnist/
 python src/train.py
 ```
 
-当前训练脚本默认训练 Improved CNN Without Dropout 模型。
+当前训练脚本默认依次训练全部四种模型。也可以只训练指定的模型：
+
+```powershell
+python src/train.py --model mlp
+python src/train.py --model cnn
+python src/train.py --model improved_cnn
+python src/train.py --model improved_cnn_no_dropout
+```
+
+如需一次训练全部模型，可以显式运行：
+
+```powershell
+python src/train.py --model all
+```
+
+查看所有训练参数：
+
+```powershell
+python src/train.py --help
+```
 
 主要训练配置：
 
@@ -345,14 +364,18 @@ python src/train.py
 - Optimizer：Adam
 - Learning Rate：0.001
 - Loss Function：CrossEntropyLoss
+- Random Seed：42
 
-训练完成后，模型参数将保存至：
+训练完成后，四个模型的参数将分别保存至：
 
 ```text
+checkpoints/mlp.ckpt
+checkpoints/cnn.ckpt
+checkpoints/improved_cnn.ckpt
 checkpoints/improved_cnn_no_dropout.ckpt
 ```
 
-注意：当前版本的训练入口默认只训练 Improved CNN Without Dropout，不会自动训练全部四种模型。
+每次训练还会生成对应的 `*_training.json` 文件，记录实际训练参数、参数量、训练耗时和检查点路径，便于实验复现和课程报告整理。
 
 ### 7. 模型评估
 
@@ -362,7 +385,24 @@ checkpoints/improved_cnn_no_dropout.ckpt
 python src/evaluate.py
 ```
 
-程序将加载训练得到的模型权重，并在 Fashion-MNIST 测试集上计算 Accuracy，输出各类别的 Precision、Recall、F1-score 和 Confusion Matrix。
+程序默认依次加载四种模型的权重，并在 Fashion-MNIST 测试集上计算 Accuracy、Macro F1、各类别的 Precision、Recall、F1-score 和 Confusion Matrix。
+
+也可以只评估一个模型：
+
+```powershell
+python src/evaluate.py --model mlp
+python src/evaluate.py --model cnn
+python src/evaluate.py --model improved_cnn
+python src/evaluate.py --model improved_cnn_no_dropout
+```
+
+评估完成后会生成：
+
+```text
+results/evaluation_results.json
+```
+
+该文件保存真实的评估指标、训练参数和混淆矩阵，后续可视化会直接读取它。
 
 需要先完成模型训练，确保对应的模型权重文件存在。
 
@@ -383,7 +423,7 @@ python src/visualize.py
 
 生成的图片保存在 `results/` 目录下。
 
-注意：当前版本的可视化脚本使用项目此前保存的四模型实验数据，不会自动读取重新训练后的评估结果。因此，重新训练模型不会自动更新四模型对比图。
+注意：可视化脚本会读取 `results/evaluation_results.json`。重新训练模型后，必须先运行 `python src/evaluate.py`，再运行 `python src/visualize.py`，图表才会反映最新的模型结果。
 
 ### 9. 单张图片预测
 
